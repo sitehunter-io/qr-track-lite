@@ -1,0 +1,40 @@
+# qr-track-lite: Cloudflare Worker configuration.
+#
+# `npx wrangler deploy` (Wrangler 4.45+) creates the KV namespace for you on the
+# first deploy. The Durable Object needs no setup beyond the migration below.
+#
+# Secrets (set with `npx wrangler secret put <NAME>`):
+#   ADMIN_SECRET         required: bearer token for the /api/links endpoints
+#   WEBHOOK_SECRET       optional: signs generic JSON webhooks (HMAC-SHA256)
+#   DEFAULT_WEBHOOK_URL  optional: alerts for links that have no webhook of their own
+
+name = "qr-track-lite"
+main = "src/index.ts"
+compatibility_date = "2026-11-01"
+
+# Your own short domain. The domain is printed into every QR code, so set it before you print.
+# Uncomment both lines below (keep them above the [[...]] sections).
+# routes = [{ pattern = "go.example.com", custom_domain = true }]
+# vars = { BASE_URL = "https://go.example.com" }
+
+# Link records (slug -> destination). Read on every scan, so redirects stay fast.
+[[kv_namespaces]]
+binding = "LINKS"
+
+# One Durable Object per link: the authoritative record plus exact scan counts.
+# SQLite-backed Durable Objects are included in the Workers Free plan.
+[[durable_objects.bindings]]
+name = "SCANS"
+class_name = "ScanCounter"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["ScanCounter"]
+
+# Keep your own console logs (errors, failed webhooks), but turn off Cloudflare's
+# per-request invocation logs, which record request details for every scan.
+[observability]
+enabled = true
+
+[observability.logs]
+invocation_logs = false

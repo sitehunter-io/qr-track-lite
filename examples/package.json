@@ -1,0 +1,22 @@
+{
+  "name": "qr-track-lite-mcp-example",
+  "private": true,
+  "type": "module",
+  "description": "A tiny MCP server that lets Claude, Cursor or any MCP client create and check qr-track-lite links.",
+  "scripts": {
+    "start": "node mcp-server.ts",
+    "test": "node --test mcp-server.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.2",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=22.18"
+  }
+}

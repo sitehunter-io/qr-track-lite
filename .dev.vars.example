@@ -1,0 +1,3 @@
+# Bearer token for creating and managing links (at least 16 characters).
+# Generate one with: openssl rand -hex 32
+ADMIN_SECRET=

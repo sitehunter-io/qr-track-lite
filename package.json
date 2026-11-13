@@ -1,0 +1,39 @@
+{
+  "name": "qr-track-lite",
+  "version": "0.1.0",
+  "description": "Self-hosted, cookie-free QR code generator and scan tracker for printed postcards and flyers, on Cloudflare Workers.",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "types": "wrangler types --include-env=false",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "hono": "^4.13.17",
+    "uqr": "^0.1.3"
+  },
+  "devDependencies": {
+    "@cloudflare/vitest-plugin": "^1.7.0",
+    "jsqr": "^1.4.0",
+    "typescript": "^5.9.3",
+    "vitest": "~4.1.0",
+    "wrangler": "^4.160.0"
+  },
+  "cloudflare": {
+    "bindings": {
+      "ADMIN_SECRET": {
+        "description": "Bearer token for creating and managing links, at least 16 characters. Generate one with: openssl rand -hex 32"
+      },
+      "LINKS": {
+        "description": "Stores link records (slug to destination). Read on every scan."
+      },
+      "SCANS": {
+        "description": "One Durable Object per link: exact scan counts and scan history."
+      }
+    }
+  }
+}
