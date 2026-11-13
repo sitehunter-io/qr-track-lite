@@ -13,4 +13,6 @@ export default defineConfig({
       },
     }),
   ],
+  // examples/ has its own package and node:test suite (run by its own CI job).
+  test: { include: ["test/**/*.test.ts"] },
 });
